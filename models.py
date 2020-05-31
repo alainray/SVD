@@ -38,10 +38,7 @@ class Model(nn.Module):
 
                 if mode == 'spectral':
                     sd = self.model.model[name].state_dict()
-                    if "conv" in name:
-                        sd['weight'] = params/stats[name]['max'].unsqueeze(2).unsqueeze(3)
-                    else:
-                        sd['weight'] = params / stats[name]['max']
+                    sd['weight'] = params / stats[name]['max']
                     self.model.model[name].load_state_dict(sd)
 
                 elif mode == 'thresh':
@@ -108,5 +105,5 @@ class CNN(nn.Module):
 
 
 if __name__ == '__main__':
-    model = Model('cnn', (1, 28, 28), 100, 20)
-    model.get_sv_stats()
+    model = Model('mlp', (1, 28, 28), 100, 20)
+    model.get_sv_stats('spectral')
